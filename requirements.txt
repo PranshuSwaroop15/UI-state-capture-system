@@ -1,0 +1,6 @@
+playwright==1.*
+rapidfuzz>=3.0.0
+pyyaml>=6.0
+python-dotenv>=1.0.0
+pyspellchecker>=0.7.0
+pytest>=8.0.0

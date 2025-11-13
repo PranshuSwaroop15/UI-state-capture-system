@@ -1,0 +1,23 @@
+intents:
+  create:
+    verbs: [create, add, new, make]
+  filter:
+    verbs: [filter, search, find, query]
+  open:
+    verbs: [open, navigate, go, goto]
+  update:
+    verbs: [update, edit, change, modify]
+  delete:
+    verbs: [delete, remove, archive]
+
+objects:
+  project:
+    nouns: [project, proj]
+  issue:
+    nouns: [issue, ticket, bug, task]
+  database:
+    nouns: [database, db, table]
+  page:
+    nouns: [page, doc, document]
+  setting:
+    nouns: [setting, settings, config, preference]
