@@ -1,0 +1,24 @@
+2025-11-14 19:31:53,237 | INFO | Run created: 20251115-003153-4affb0b8
+2025-11-14 19:31:53,237 | INFO | Artifacts → /Users/spranshu/Desktop/Soft-Light/runs/20251115-003153-4affb0b8
+2025-11-14 19:31:53,243 | INFO | Parsed: intent=create, object=issue, app=Linear
+2025-11-14 19:31:53,244 | INFO | Planner wrote 6 steps → runs/20251115-003153-4affb0b8/steps.yaml
+2025-11-14 19:31:54,154 | INFO | [execute_plan] Using storage_state='linear_state.json' for app='Linear'
+2025-11-14 19:31:54,564 | INFO | [step 1] {'action': 'open', 'app': 'Linear'}
+2025-11-14 19:31:54,564 | INFO | [open] Opening app=Linear at https://linear.app/
+2025-11-14 19:32:00,256 | INFO | [step 2] {'action': 'goto', 'section': 'issues'}
+2025-11-14 19:32:00,256 | INFO | [goto] Navigating to section='issues'
+2025-11-14 19:32:00,478 | INFO | [step 3] {'action': 'click', 'text': 'new issue'}
+2025-11-14 19:32:00,504 | INFO | [click] Clicking button with text≈'new issue'
+2025-11-14 19:32:00,689 | INFO | [step 4] {'action': 'fill', 'field': 'name', 'val': 'signup bug'}
+2025-11-14 19:32:00,689 | INFO | [fill] Filling field≈'name' with value='signup bug'
+2025-11-14 19:32:00,700 | INFO | [fill] Using first role=textbox as fallback
+2025-11-14 19:32:00,784 | INFO | [step 5] {'action': 'submit'}
+2025-11-14 19:32:00,784 | INFO | [submit] Trying to submit (generic heuristic)
+2025-11-14 19:32:00,787 | INFO | [submit] role=button matches for 'Create project': 0
+2025-11-14 19:32:00,789 | INFO | [submit] role=button matches for 'Create': 3
+2025-11-14 19:32:30,815 | INFO | [submit] role=button matches for 'Save': 1
+2025-11-14 19:32:30,918 | INFO | [submit] Clicked button with label≈'Save'
+2025-11-14 19:32:31,009 | INFO | [step 6] {'action': 'assert', 'token': 'created'}
+2025-11-14 19:32:31,009 | INFO | [assert] Checking if token='created' appears in page text
+2025-11-14 19:32:31,012 | INFO | [assert] PASSED: found token='created'
+2025-11-14 19:32:31,226 | INFO | Run setup complete (planner/executor will attach here).

@@ -1,0 +1,74 @@
+[
+  {
+    "index": 1,
+    "action": "open",
+    "state_label": null,
+    "step": {
+      "action": "open",
+      "app": "Linear"
+    },
+    "url": "https://linear.app/testworksc/team/TES/active",
+    "screenshot": "01_open.png",
+    "dom_hash": "23559706c774fe43e990285a787a299f090402f1f7c0d7cd411325230ba9867b"
+  },
+  {
+    "index": 2,
+    "action": "goto",
+    "state_label": null,
+    "step": {
+      "action": "goto",
+      "section": "issues"
+    },
+    "url": "https://linear.app/testworksc/my-issues/assigned",
+    "screenshot": "02_goto.png",
+    "dom_hash": "b69dca6265f1c495d22b532fed83571513db7bdb58ba1909f15890518b451b9c"
+  },
+  {
+    "index": 3,
+    "action": "click",
+    "state_label": null,
+    "step": {
+      "action": "click",
+      "text": "filter"
+    },
+    "url": "https://linear.app/testworksc/my-issues/assigned",
+    "screenshot": "03_click.png",
+    "dom_hash": "724bec16d85a177754b02c070bd4601a99260e5cc81def2d27e6cb0cafe90298"
+  },
+  {
+    "index": 4,
+    "action": "fill",
+    "state_label": null,
+    "step": {
+      "action": "fill",
+      "field": "query",
+      "val": "priority high"
+    },
+    "url": "https://linear.app/testworksc/my-issues/assigned",
+    "screenshot": "04_fill.png",
+    "dom_hash": "56d90df8f6b2e346971986871e26e886b56fb7aa246a5071ca22949be3df7e2f"
+  },
+  {
+    "index": 5,
+    "action": "submit",
+    "state_label": null,
+    "step": {
+      "action": "submit"
+    },
+    "url": "https://linear.app/testworksc/my-issues/assigned",
+    "screenshot": "05_submit.png",
+    "dom_hash": "67f6cdebbf0878bef9380e4f4b71b766a757cecf748e74406251a4a815a2f1bd"
+  },
+  {
+    "index": 6,
+    "action": "assert",
+    "state_label": null,
+    "step": {
+      "action": "assert",
+      "token": "filtered"
+    },
+    "url": "https://linear.app/testworksc/my-issues/assigned",
+    "screenshot": "06_assert.png",
+    "dom_hash": "67f6cdebbf0878bef9380e4f4b71b766a757cecf748e74406251a4a815a2f1bd"
+  }
+]

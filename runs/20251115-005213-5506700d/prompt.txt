@@ -1,0 +1,1 @@
+Filter issues in Linear by priority high

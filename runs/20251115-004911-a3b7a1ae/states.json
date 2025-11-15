@@ -1,0 +1,81 @@
+[
+  {
+    "index": 1,
+    "action": "open",
+    "state_label": "linear_home",
+    "step": {
+      "action": "open",
+      "app": "Linear",
+      "state_label": "linear_home"
+    },
+    "url": "https://linear.app/testworksc/team/TES/active",
+    "screenshot": "01_open.png",
+    "dom_hash": "d140ae001fc13f1f215162f39eff8edcc970d71482f1704a59603dfd2774fb4a"
+  },
+  {
+    "index": 2,
+    "action": "goto",
+    "state_label": "issues_list",
+    "step": {
+      "action": "goto",
+      "section": "Issues",
+      "state_label": "issues_list"
+    },
+    "url": "https://linear.app/testworksc/my-issues/assigned",
+    "screenshot": "02_goto.png",
+    "dom_hash": "7130146880249277b92b08065f0b9c6bdd7a55e7a148512874e3bf30b115c77e"
+  },
+  {
+    "index": 3,
+    "action": "click",
+    "state_label": "new_issue_modal_open",
+    "step": {
+      "action": "click",
+      "text": "New issue",
+      "state_label": "new_issue_modal_open"
+    },
+    "url": "https://linear.app/testworksc/my-issues/assigned",
+    "screenshot": "03_click.png",
+    "dom_hash": "b22d020e7f95398d74bd21abba296dea59181707984b040bb215d008f0effb78"
+  },
+  {
+    "index": 4,
+    "action": "fill",
+    "state_label": "issue_title_filled",
+    "step": {
+      "action": "fill",
+      "field": "Title",
+      "val": "<AUTO_NAME>",
+      "state_label": "issue_title_filled"
+    },
+    "url": "https://linear.app/testworksc/my-issues/assigned",
+    "screenshot": "04_fill.png",
+    "dom_hash": "a73c2bb40def7a77f72327f1b1a5308818a662d670ea2ae99755c55cfb551d1f"
+  },
+  {
+    "index": 5,
+    "action": "click",
+    "state_label": "issue_created_button_clicked",
+    "step": {
+      "action": "click",
+      "text": "Create issue",
+      "state_label": "issue_created_button_clicked"
+    },
+    "url": "https://linear.app/testworksc/my-issues/assigned",
+    "screenshot": "05_click.png",
+    "dom_hash": "66dd9bd9c6a8487510f347a2222a4e262bb2ea38012d2729caed019c72da101c"
+  },
+  {
+    "index": 6,
+    "action": "assert",
+    "state_label": "issue_created",
+    "step": {
+      "action": "assert",
+      "token": "<AUTO_NAME>",
+      "state_label": "issue_created"
+    },
+    "url": "https://linear.app/testworksc/my-issues/assigned",
+    "screenshot": "06_assert.png",
+    "dom_hash": "2a089600ee4e352454830a8fd4de221ad0b5882bca75fc28dd1ac0b5ad97966e"
+  }
+]

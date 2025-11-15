@@ -1,0 +1,74 @@
+[
+  {
+    "index": 1,
+    "action": "open",
+    "state_label": null,
+    "step": {
+      "action": "open",
+      "app": "Linear"
+    },
+    "url": "https://linear.app/testworksc/team/TES/active",
+    "screenshot": "01_open.png",
+    "dom_hash": "e289374d003b79499d60837a7857b3e0e78bc8cf072a9c44fae5db54ee15d920"
+  },
+  {
+    "index": 2,
+    "action": "goto",
+    "state_label": null,
+    "step": {
+      "action": "goto",
+      "section": "issues"
+    },
+    "url": "https://linear.app/testworksc/my-issues/assigned",
+    "screenshot": "02_goto.png",
+    "dom_hash": "90401d19e2ec18da12ecc32ec5a4b0c5bd4cf98a28c8995a88eba5329d852a16"
+  },
+  {
+    "index": 3,
+    "action": "click",
+    "state_label": null,
+    "step": {
+      "action": "click",
+      "text": "new issue"
+    },
+    "url": "https://linear.app/testworksc/my-issues/assigned",
+    "screenshot": "03_click.png",
+    "dom_hash": "9752172eeea1918358c84c09518bc64021039144f5f9654b7ad5d68d5cf54050"
+  },
+  {
+    "index": 4,
+    "action": "fill",
+    "state_label": null,
+    "step": {
+      "action": "fill",
+      "field": "name",
+      "val": "signup bug"
+    },
+    "url": "https://linear.app/testworksc/my-issues/assigned",
+    "screenshot": "04_fill.png",
+    "dom_hash": "d1adc6fac6769de1bfa7589c05d00999320cc1f77dbc428c1b394446d34b6efa"
+  },
+  {
+    "index": 5,
+    "action": "submit",
+    "state_label": null,
+    "step": {
+      "action": "submit"
+    },
+    "url": "https://linear.app/testworksc/my-issues/assigned",
+    "screenshot": "05_submit.png",
+    "dom_hash": "22b2ecd5eec407b1f6073fb002d7ddc99ea8ee92cd98e7dd51ff620a18cda210"
+  },
+  {
+    "index": 6,
+    "action": "assert",
+    "state_label": null,
+    "step": {
+      "action": "assert",
+      "token": "created"
+    },
+    "url": "https://linear.app/testworksc/my-issues/assigned",
+    "screenshot": "06_assert.png",
+    "dom_hash": "272421089467148678097032b03903e1aac4dc3ea0a9a409abb914c01e76e0c6"
+  }
+]

@@ -1,0 +1,19 @@
+- action: open
+  app: Linear
+  state_label: linear_home
+- action: goto
+  section: Issues
+  state_label: issues_list
+- action: click
+  text: New issue
+  state_label: new_issue_modal_open
+- action: fill
+  field: Title
+  val: signin bug
+  state_label: issue_title_filled
+- action: click
+  text: Create issue
+  state_label: issue_created_button_clicked
+- action: assert
+  token: signin bug
+  state_label: issue_created

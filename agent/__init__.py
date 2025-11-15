@@ -75,7 +75,8 @@ import logging
 import datetime as dt
 from pathlib import Path
 from typing import Optional
-
+from planner import plan
+from executor import execute_plan
 # ---------- Config ----------
 RUNS_DIR = Path(os.environ.get("RUNS_DIR", "./runs"))
 MIN_PROMPT_LEN = int(os.environ.get("MIN_PROMPT_LEN", "4"))
@@ -177,6 +178,8 @@ if __name__ == "__main__":
         run_id, run_dir, logger = CLI.create_run(prompt)
         # ↓↓↓ Hook your Agent B orchestrator here later ↓↓↓
         # AgentB.run(prompt=prompt, run_dir=run_dir, logger=logger)
+        plan(prompt=prompt, run_dir=run_dir, logger=logger)
+        execute_plan(run_dir, logger)
 
         logger.info("Run setup complete (planner/executor will attach here).")
         print(f"Run {run_id} ready at: {run_dir}\n")

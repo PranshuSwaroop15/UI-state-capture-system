@@ -1,0 +1,80 @@
+[
+  {
+    "index": 1,
+    "action": "open",
+    "state_label": "linear_home",
+    "step": {
+      "action": "open",
+      "app": "Asana",
+      "state_label": "linear_home"
+    },
+    "url": "https://app.asana.com/1/676371944581295/home",
+    "screenshot": "01_open.png",
+    "dom_hash": "a7d951cd8dddaaf0bca32e7c5cf0b1ce6033087f07cf48ddbdc209c1d692b4fb"
+  },
+  {
+    "index": 2,
+    "action": "goto",
+    "state_label": "projects_list",
+    "step": {
+      "action": "goto",
+      "section": "Projects",
+      "state_label": "projects_list"
+    },
+    "url": "https://app.asana.com/1/676371944581295/home",
+    "screenshot": "02_goto.png",
+    "dom_hash": "a74b00d8e640e89b61fc79a8de0ef1e019e1672c32bcec398825f72425c44a18"
+  },
+  {
+    "index": 3,
+    "action": "click",
+    "state_label": "create_project_modal_open",
+    "step": {
+      "action": "click",
+      "text": "New project",
+      "state_label": "create_project_modal_open"
+    },
+    "url": "https://app.asana.com/1/676371944581295/home",
+    "screenshot": "03_click.png",
+    "dom_hash": "cd53d3ee2a5de250cca42773cc5f0ffda13d00d2e49a8a0a75cbb650e5c18bc4"
+  },
+  {
+    "index": 4,
+    "action": "fill",
+    "state_label": "project_form_filled",
+    "step": {
+      "action": "fill",
+      "field": "Name",
+      "val": "hiring pipeline",
+      "state_label": "project_form_filled"
+    },
+    "url": "https://app.asana.com/1/676371944581295/home",
+    "screenshot": "04_fill.png",
+    "dom_hash": "a2cadbbaf6e1d2e76039c3656ef3cccdc5b498f7c596ec72dda64ef76aee85bd"
+  },
+  {
+    "index": 5,
+    "action": "submit",
+    "state_label": "project_submit_clicked",
+    "step": {
+      "action": "submit",
+      "state_label": "project_submit_clicked"
+    },
+    "url": "https://app.asana.com/1/676371944581295/home",
+    "screenshot": "05_submit.png",
+    "dom_hash": "3d53de073161d1231bb6e9a964df74101c6517c4b1d33cee47afbbd4250307f9"
+  },
+  {
+    "index": 6,
+    "action": "assert",
+    "state_label": "project_created",
+    "step": {
+      "action": "assert",
+      "token": "Project",
+      "state_label": "project_created"
+    },
+    "url": "https://app.asana.com/1/676371944581295/home",
+    "screenshot": "06_assert.png",
+    "dom_hash": "3d53de073161d1231bb6e9a964df74101c6517c4b1d33cee47afbbd4250307f9"
+  }
+]

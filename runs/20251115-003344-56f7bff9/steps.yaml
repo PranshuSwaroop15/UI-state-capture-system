@@ -1,0 +1,12 @@
+- action: open
+  app: Linear
+- action: goto
+  section: issues
+- action: click
+  text: filter
+- action: fill
+  field: query
+  val: priority high
+- action: submit
+- action: assert
+  token: filtered

@@ -1,2 +1,4 @@
 .agent_env/
 .agent_env/
+asana_state.json
+linear_status.json

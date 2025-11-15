@@ -1,0 +1,13 @@
+2025-11-14 19:07:55,529 | INFO | Run created: 20251115-000755-eaa1d04e
+2025-11-14 19:07:55,530 | INFO | Artifacts → /Users/spranshu/Desktop/Soft-Light/runs/20251115-000755-eaa1d04e
+2025-11-14 19:07:55,536 | INFO | Parsed: intent=create, object=page, app=Notion
+2025-11-14 19:07:55,538 | INFO | Planner wrote 4 steps → runs/20251115-000755-eaa1d04e/steps.yaml
+2025-11-14 19:07:56,789 | INFO | [execute_plan] No storage_state for app='Notion'; using empty context
+2025-11-14 19:07:57,244 | INFO | [step 1] {'action': 'open', 'app': 'Notion'}
+2025-11-14 19:07:57,244 | INFO | [open] Opening app=Notion at https://www.notion.so/
+2025-11-14 19:08:10,966 | WARNING | [step 1] Error executing step {'action': 'open', 'app': 'Notion'}: Target page, context or browser has been closed
+=========================== logs ===========================
+"commit" event fired
+"domcontentloaded" event fired
+"load" event fired
+============================================================

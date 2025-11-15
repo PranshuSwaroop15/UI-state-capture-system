@@ -1,0 +1,80 @@
+[
+  {
+    "index": 1,
+    "action": "open",
+    "state_label": "linear_home",
+    "step": {
+      "action": "open",
+      "app": "Linear",
+      "state_label": "linear_home"
+    },
+    "url": "https://linear.app/testworksc/team/TES/active",
+    "screenshot": "01_open.png",
+    "dom_hash": "8ea3822bfd25434bed8751e27af37f5d62cc69c1a7600d9b3c37a964da4c0f53"
+  },
+  {
+    "index": 2,
+    "action": "goto",
+    "state_label": "projects_list",
+    "step": {
+      "action": "goto",
+      "section": "Projects",
+      "state_label": "projects_list"
+    },
+    "url": "https://linear.app/testworksc/projects/all",
+    "screenshot": "02_goto.png",
+    "dom_hash": "dbd920216260cda9c718f8e98979d473f56075e237d395afcfb93c89865fb33d"
+  },
+  {
+    "index": 3,
+    "action": "click",
+    "state_label": "create_project_modal_open",
+    "step": {
+      "action": "click",
+      "text": "New project",
+      "state_label": "create_project_modal_open"
+    },
+    "url": "https://linear.app/testworksc/projects/all",
+    "screenshot": "03_click.png",
+    "dom_hash": "2c6c134a54f34be77fb17b36cda12930587ca7ac8c6298e515e5df0a4901c717"
+  },
+  {
+    "index": 4,
+    "action": "fill",
+    "state_label": "project_form_filled",
+    "step": {
+      "action": "fill",
+      "field": "Name",
+      "val": "<AUTO_NAME>",
+      "state_label": "project_form_filled"
+    },
+    "url": "https://linear.app/testworksc/projects/all",
+    "screenshot": "04_fill.png",
+    "dom_hash": "290094804bff1cc3fca534dc2f620e9d6b3a49c4d93c9acfd52f9748588c343f"
+  },
+  {
+    "index": 5,
+    "action": "submit",
+    "state_label": "project_submit_clicked",
+    "step": {
+      "action": "submit",
+      "state_label": "project_submit_clicked"
+    },
+    "url": "https://linear.app/testworksc/projects/all",
+    "screenshot": "05_submit.png",
+    "dom_hash": "945c07e7551c4142864686e8df291b69bb4464da31f18ea6c15b09f8186155d9"
+  },
+  {
+    "index": 6,
+    "action": "assert",
+    "state_label": "project_created",
+    "step": {
+      "action": "assert",
+      "token": "Project",
+      "state_label": "project_created"
+    },
+    "url": "https://linear.app/testworksc/projects/all",
+    "screenshot": "06_assert.png",
+    "dom_hash": "152b9c1a4b7ede4f6421c03bc4063055b13b244463ebeb90d5e3633bf244b51b"
+  }
+]

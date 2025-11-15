@@ -1,0 +1,20 @@
+2025-11-14 19:49:11,365 | INFO | Run created: 20251115-004911-a3b7a1ae
+2025-11-14 19:49:11,366 | INFO | Artifacts → /Users/spranshu/Desktop/Soft-Light/runs/20251115-004911-a3b7a1ae
+2025-11-14 19:49:11,374 | INFO | Parsed: intent=create, object=issue, app=Linear
+2025-11-14 19:49:11,376 | INFO | Planner wrote 6 steps → runs/20251115-004911-a3b7a1ae/steps.yaml
+2025-11-14 19:49:12,714 | INFO | [execute_plan] Using storage_state='linear_state.json' for app='Linear'
+2025-11-14 19:49:13,487 | INFO | [step 1] {'action': 'open', 'app': 'Linear', 'state_label': 'linear_home'}
+2025-11-14 19:49:13,487 | INFO | [open] Opening app=Linear at https://linear.app/
+2025-11-14 19:49:19,288 | INFO | [step 2] {'action': 'goto', 'section': 'Issues', 'state_label': 'issues_list'}
+2025-11-14 19:49:19,288 | INFO | [goto] Navigating to section='Issues'
+2025-11-14 19:49:19,505 | INFO | [step 3] {'action': 'click', 'text': 'New issue', 'state_label': 'new_issue_modal_open'}
+2025-11-14 19:49:19,510 | INFO | [click] Clicking button with text≈'New issue'
+2025-11-14 19:49:19,694 | INFO | [step 4] {'action': 'fill', 'field': 'Title', 'val': '<AUTO_NAME>', 'state_label': 'issue_title_filled'}
+2025-11-14 19:49:19,694 | INFO | [fill] Filling field≈'Title' with value='<AUTO_NAME>'
+2025-11-14 19:49:19,697 | INFO | [fill] Using label-based locator
+2025-11-14 19:49:19,789 | INFO | [step 5] {'action': 'click', 'text': 'Create issue', 'state_label': 'issue_created_button_clicked'}
+2025-11-14 19:49:19,793 | INFO | [click] Clicking button with text≈'Create issue'
+2025-11-14 19:49:20,160 | INFO | [step 6] {'action': 'assert', 'token': '<AUTO_NAME>', 'state_label': 'issue_created'}
+2025-11-14 19:49:20,160 | INFO | [assert] Checking if token='<AUTO_NAME>' appears in page text
+2025-11-14 19:49:20,162 | INFO | [assert] PASSED: found token='<AUTO_NAME>'
+2025-11-14 19:49:20,397 | INFO | Run setup complete (planner/executor will attach here).

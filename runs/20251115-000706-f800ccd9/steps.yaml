@@ -1,0 +1,12 @@
+- action: open
+  app: Linear
+- action: goto
+  section: Projects
+- action: click
+  text: New project
+- action: fill
+  field: Name
+  val: bob the builder
+- action: submit
+- action: assert
+  token: Project

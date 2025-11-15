@@ -1,0 +1,12 @@
+- action: open
+  app: Linear
+- action: goto
+  section: issues
+- action: click
+  text: new issue
+- action: fill
+  field: name
+  val: signup bug
+- action: submit
+- action: assert
+  token: created
