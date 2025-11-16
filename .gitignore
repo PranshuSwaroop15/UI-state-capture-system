@@ -1,4 +1,4 @@
 .agent_env/
-.agent_env/
-asana_state.json
-linear_status.json
+asana_state.json/
+linear_state.json/
+notion_state.json/
