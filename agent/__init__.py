@@ -20,27 +20,6 @@ def _utc_run_id() -> str:
 def _ensure_dir(p: Path) -> None:
     p.mkdir(parents=True, exist_ok=True)
 
-# class CLI:
-#     @staticmethod
-#     def read_prompt() -> Optional[str]:
-#         try:
-#             raw = input("Enter task (or 'exit' to quit) > ").strip()
-#         except (EOFError, KeyboardInterrupt):
-#             print("\nExiting.")
-#             return None
-
-#         if not raw or raw.lower() in {"exit", "quit"}:
-#             return None
-
-#         if len(raw) < MIN_PROMPT_LEN:
-#             print(f"Please enter a clearer prompt (≥ {MIN_PROMPT_LEN} chars).")
-#             return ""
-
-#         if len(raw) > MAX_PROMPT_LEN:
-#             print(f"Trimming prompt to {MAX_PROMPT_LEN} chars.")
-#             raw = raw[:MAX_PROMPT_LEN]
-
-#         return raw
 class CLI:
     @staticmethod
     def read_prompt() -> Optional[str]:
