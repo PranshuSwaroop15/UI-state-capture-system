@@ -5,14 +5,12 @@ import re
 from typing import Dict, List, Any, Optional
 import string
 from difflib import get_close_matches
-
+import re
 
 CONFIG_DIR = Path(__file__).parent / "config"
 
 
-# ---------------------------
-# LOAD CONFIGS
-# ---------------------------
+
 def _load_configs():
     with open(CONFIG_DIR / "intents.yaml") as f:
         intents_cfg = yaml.safe_load(f)
@@ -23,9 +21,7 @@ def _load_configs():
     return intents_cfg, app_names
 
 
-# ---------------------------
-# NORMALIZATION
-# ---------------------------
+
 def _normalize(prompt: str) -> str:
     prompt = prompt.lower()
     prompt = prompt.translate(str.maketrans("", "", string.punctuation))
@@ -33,9 +29,7 @@ def _normalize(prompt: str) -> str:
     return prompt
 
 
-# ---------------------------
-# APP DETECTION
-# ---------------------------
+
 def _detect_app(prompt: str, apps: List[str]) -> Optional[str]:
     tokens = re.findall(r"[a-zA-Z]+", prompt.lower())
     apps_lower = [a.lower() for a in apps]
@@ -49,19 +43,17 @@ def _detect_app(prompt: str, apps: List[str]) -> Optional[str]:
     return None
 
 
-# ---------------------------
-# INTENT + OBJECT DETECTION
-# ---------------------------
+
 def _detect_intent_object(prompt: str, intents_cfg):
     tokens = re.findall(r"[a-zA-Z]+", prompt.lower())
 
-    # Build vocab: word → intent
+    
     intent_vocab: Dict[str, str] = {}
     for intent_name, info in intents_cfg.get("intents", {}).items():
         for v in info.get("verbs", []):
             intent_vocab[v.lower()] = intent_name
 
-    # Build vocab: word → object
+   
     object_vocab: Dict[str, str] = {}
     for obj_name, info in intents_cfg.get("objects", {}).items():
         for n in info.get("nouns", []):
@@ -87,9 +79,7 @@ def _detect_intent_object(prompt: str, intents_cfg):
     return intent, obj
 
 
-# ---------------------------
-# BUILD STEPS
-# ---------------------------
+
 def _build_steps(intent: str | None,
                  obj: str | None,
                  app: str | None,
@@ -110,33 +100,21 @@ def _build_steps(intent: str | None,
         criteria = extract_filter_value(prompt)
         return _steps_filter(obj, app, criteria)
 
-    if intent == "update":
-        return _steps_update(obj, app, name)
-
-    if intent == "delete":
-        return _steps_delete(obj, app, name)
-
     if intent == "open":
         return _steps_open(obj, app)
 
-    # fallback
     return [
         {"action": "open", "app": app},
         {"action": "assert", "token": "opened"},
     ]
 
 
-# ---------------------------
-# WRITE STEPS
-# ---------------------------
 def _write_steps_yaml(steps, run_dir: Path):
     with open(run_dir / "steps.yaml", "w") as f:
         yaml.safe_dump(steps, f, sort_keys=False)
 
 
-# ---------------------------
-# MAIN ENTRYPOINT
-# ---------------------------
+
 def plan(prompt: str, run_dir: Path, logger) -> None:
     intents_cfg, app_names = _load_configs()
     norm = _normalize(prompt)
@@ -152,135 +130,57 @@ def plan(prompt: str, run_dir: Path, logger) -> None:
     logger.info(f"Planner wrote {len(steps)} steps → {run_dir/'steps.yaml'}")
 
 
-# ---------------------------
-# STEP TEMPLATES
-# ---------------------------
-# def _steps_create(obj: str, app: str, name: str):
-#     return [
-#         {"action": "open", "app": app},
-#         {"action": "goto", "section": f"{obj}s"},
-#         {"action": "click", "text": f"new {obj}"},
-#         {"action": "fill", "field": "name", "val": name or "<AUTO_NAME>"},
-#         {"action": "create project"},
-#         {"action": "assert", "token": "created"},
-#     ]
-# def _steps_create(obj, app, name):
-#     steps = [
-#         {"action": "open", "app": app},
-#         {"action": "goto", "section": f"{obj}s"},
-#         {"action": "click", "text": f"new {obj}"},
-#     ]
-
-#     # Additional modal step for apps like Linear / Asana
-#     if app in ["Linear", "Asana"]:
-#         steps.append({"action": "click", "text": "Blank project"})
-
-#     steps.extend([
-#         {"action": "fill", "field": "name", "val": name or "<AUTO_NAME>"},
-#         {"action": "submit"},
-#         {"action": "assert", "token": "created"},
-#     ])
-#     return steps
-
-# def _steps_create(obj: str | None, app: str | None, name: str | None):
-#     title = name or "<AUTO_NAME>"
-
-#     # 🔹 1) Notion: create page
-#     if app == "Notion" and obj == "page":
-#         # Flow:
-#         # 1) open notion
-#         # 2) click "New page" in sidebar
-#         # 3) type title into "Untitled"
-#         # 4) assert the title appears
-#         return [
-#             {"action": "open", "app": app},
-#             {"action": "click", "text": "New page"},
-#             {"action": "fill", "field": "Untitled", "val": title},
-#             {"action": "assert", "token": title},
-#         ]
-
-#     # 🔹 2) Linear: create project
-#     if app == "Linear" and obj == "project":
-#         section = "Projects"
-#         click_text = "New project"
-#         field = "Name"           # closer to real UI
-#         assert_token = "Project" # something that likely appears on success
-
-#     # 🔹 3) Asana: create project
-#     # elif app == "Asana" and obj == "project":
-#     #     section = "Projects"
-#     #     click_text = "New project"
-#     #     field = "Project name"   # real label / placeholder
-#     #     assert_token = "Project"
-#     elif app == "Asana" and obj == "project":
-#         title = name or "<AUTO_NAME>"
-#         return [
-#             {"action": "open", "app": app},
-#             {"action": "goto", "section": "Projects"},
-#             {"action": "click", "text": "New project"},
-#             # Let whatever Asana shows be the default mode/template.
-#             # Just try to fill the main project name field and submit.
-#             {"action": "fill", "field": "Project name", "val": title},
-#             {"action": "submit"},
-#             {"action": "assert", "token": title},
-#         ]
-
-#     # 🔹 4) Generic create fallback
-#     else:
-#         section = f"{obj}s" if obj else None
-#         click_text = f"new {obj}" if obj else "new"
-#         field = "name"
-#         assert_token = "created"
-
-#     steps: List[Dict[str, Any]] = [
-#         {"action": "open", "app": app},
-#     ]
-
-#     if section:
-#         steps.append({"action": "goto", "section": section})
-
-#     steps.extend(
-#         [
-#             {"action": "click", "text": click_text},
-#             {"action": "fill", "field": field, "val": title},
-#             {"action": "submit"},
-#             {"action": "assert", "token": assert_token},
-#         ]
-#     )
-
-#     return steps
 
 #Working
 def _steps_create(obj: str | None, app: str | None, name: str | None):
     title = name or "<AUTO_NAME>"
 
-    # 🔹 Notion page (if you have this branch, keep it)
+
+    if app == "Notion" and obj == "database":
+       return [
+        {"action": "open", "app": app, "state_label": "notion_home"},
+
+        {"action": "click", "text": "New page", "state_label": "notion_new_page_clicked"},
+
+        {"action": "click", "text": "Database", "state_label": "notion_db_template_open"},
+
+        {
+            "action": "click",
+            "text": "Empty",
+            "state_label": "notion_empty_db_selected"
+        },
+
+        {
+            "action": "fill",
+            "field": "New page",
+            "val": title,
+            "state_label": "notion_db_title_filled"
+        },
+
+        {
+            "action": "assert",
+            "token": title,
+            "state_label": "notion_db_created"
+        },
+    ]
     if app == "Notion" and obj == "page":
         return [
-            {"action": "open", "app": app},
-            {"action": "click", "text": "New page"},
-            {"action": "fill", "field": "Untitled", "val": title},
-            {"action": "assert", "token": title},
+            {"action": "open", "app": app, "state_label": "notion_home"},
+            {"action": "click", "text": "New page", "state_label": "notion_new_page_clicked"},
+            {"action": "fill", "field": "New page", "val": title, "state_label": "notion_title_filled"},
+            {"action": "assert", "token": title, "state_label": "notion_page_created"},
         ]
 
-    # 🔹 Asana: use top-left "Create" menu, not sidebar "Projects"
     if app == "Asana" and obj == "project":
-         return [
-            # {"action": "open", "app": app},
-            # {"action": "click", "text": "Create"},          # top-left red button
-            # {"action": "click", "text": "Project"},
-            # {"action": "fill", "field": "Project name", "val": title},
-            # {"action": "submit"},
-            # {"action": "assert", "token": title},
-            {"action": "open", "app": app, "state_label": "linear_home"},
-            {"action": "goto", "section": "Projects", "state_label": "projects_list"},
-            {"action": "click", "text": "New project", "state_label": "create_project_modal_open"},
-            {"action": "fill", "field": "Name", "val": title, "state_label": "project_form_filled"},
-            {"action": "submit", "state_label": "project_submit_clicked"},
-            {"action": "assert", "token": "Project", "state_label": "project_created"},
+        return [
+            {"action": "open", "app": app, "state_label": "asana_home"},
+            {"action": "click", "text": "Create", "state_label": "asana_create_menu_open"},
+            {"action": "click", "text": "Project", "state_label": "asana_new_project_modal_open"},
+            {"action": "fill", "field": "Project name", "val": title, "state_label": "asana_project_name_filled"},
+            {"action": "submit", "state_label": "asana_project_submit_clicked"},
+            {"action": "assert", "token": title, "state_label": "asana_project_created"},
         ]
 
-    #🔹 Linear: create project (your existing working flow)
     if app == "Linear" and obj == "project":
         section = "Projects"
         click_text = "New project"
@@ -288,13 +188,6 @@ def _steps_create(obj: str | None, app: str | None, name: str | None):
         assert_token = "Project"
 
         return [
-            # {"action": "open", "app": app},
-            # {"action": "goto", "section": section},
-            # {"action": "click", "text": click_text},
-            # {"action": "fill", "field": field, "val": title},
-            # {"action": "submit"},
-            # {"action": "assert", "token": assert_token},
-        
           
         {"action": "open", "app": app, "state_label": "linear_home"},
         {"action": "goto", "section": "Projects", "state_label": "projects_list"},
@@ -312,116 +205,63 @@ def _steps_create(obj: str | None, app: str | None, name: str | None):
             {"action": "click", "text": "New issue", "state_label": "new_issue_modal_open"},
             {"action": "fill", "field": "Title", "val": title, "state_label": "issue_title_filled"},
 
-            # 🔥 THIS IS THE FIX:
             {"action": "click", "text": "Create issue", "state_label": "issue_created_button_clicked"},
 
             {"action": "assert", "token": title, "state_label": "issue_created"},
         ]
 
 
-    # 🔹 Generic fallback
     section = f"{obj}s" if obj else None
     click_text = f"new {obj}" if obj else "new"
     field = "name"
     assert_token = "created"
 
-    steps: List[Dict[str, Any]] = [{"action": "open", "app": app}]
+    
+    steps: List[Dict[str, Any]] = [{"action": "open", "app": app, "state_label": "app_open"}]
     if section:
-        steps.append({"action": "goto", "section": section})
+        steps.append({"action": "goto", "section": section, "state_label": f"{section.lower()}_list"})
 
     steps.extend(
         [
-            {"action": "click", "text": click_text},
-            {"action": "fill", "field": field, "val": title},
-            {"action": "submit"},
-            {"action": "assert", "token": assert_token},
+            {"action": "click", "text": click_text, "state_label": f"new_{obj}_click" if obj else "new_item_click"},
+            {"action": "fill", "field": field, "val": title, "state_label": f"{obj}_name_filled" if obj else "name_filled"},
+            {"action": "submit", "state_label": "submit_clicked"},
+            {"action": "assert", "token": assert_token, "state_label": f"{obj}_created" if obj else "item_created"},
         ]
     )
-    
+
     return steps
 
-# def _steps_create(obj: str | None, app: str | None, name: str | None):
-#     title = name or "<AUTO_NAME>"
+   
+def _steps_filter(obj: str, app: str, criteria: str | None):
+    criteria = (criteria or "").strip()
 
-#     # --- Asana: use top-left Create menu only ---
-#     if app == "Asana" and obj == "project":
-#         return [
-#             {"action": "open", "app": app},
-#             {"action": "click", "text": "Create"},
-#             {"action": "click", "text": "Project"},
-#             {"action": "fill", "field": "Project name", "val": title},
-#             {"action": "submit"},
-#             {"action": "assert", "token": title},
-#         ]
-
-#     # --- Linear: your working flow ---
-#     if app == "Linear" and obj == "project":
-#         section = "Projects"
-#         click_text = "New project"
-#         field = "Name"
-#         assert_token = "Project"
-
-#         return [
-#             {"action": "open", "app": app},
-#             {"action": "goto", "section": section},
-#             {"action": "click", "text": click_text},
-#             {"action": "fill", "field": field, "val": title},
-#             {"action": "submit"},
-#             {"action": "assert", "token": assert_token},
-#         ]
-
-#     # --- Generic fallback for other cases ---
-#     section = f"{obj}s" if obj else None
-#     click_text = f"new {obj}" if obj else "new"
-#     field = "name"
-#     assert_token = "created"
-
-#     steps = [{"action": "open", "app": app}]
-#     if section:
-#         steps.append({"action": "goto", "section": section})
-
-#     steps.extend(
-#         [
-#             {"action": "click", "text": click_text},
-#             {"action": "fill", "field": field, "val": title},
-#             {"action": "submit"},
-#             {"action": "assert", "token": assert_token},
-#         ]
-#     )
-#     return steps
-
-
-def _steps_filter(obj: str, app: str, criteria: str):
-    return [
-        {"action": "open", "app": app},
-        {"action": "goto", "section": f"{obj}s"},
-        {"action": "click", "text": "filter"},
-        {"action": "fill", "field": "query", "val": criteria or "<AUTO_FILTER>"},
-        {"action": "submit"},
-        {"action": "assert", "token": "filtered"},
+    steps: List[Dict[str, Any]] = [
+        {"action": "open", "app": app, "state_label": f"{app.lower()}_home"},
+        {"action": "goto", "section": f"{obj}s", "state_label": f"{obj}s_list"},
+        {"action": "click", "text": "Filter", "state_label": "filter_panel_open"},
     ]
 
+    if criteria:
+        keywords = re.findall(r"[a-zA-Z]+", criteria.lower())
+        for kw in keywords:
+            steps.append(
+                {
+                    "action": "click",
+                    "text": kw,           
+                    "state_label": f"filter_kw_{kw}",
+                }
+            )
+    steps.append(
+        {
+            "action": "assert",
+            "token": "Filter",         
+            "state_label": "filter_result_visible",
+        }
+    )
 
-def _steps_update(obj: str, app: str, name: str):
-    return [
-        {"action": "open", "app": app},
-        {"action": "goto", "section": f"{obj}s"},
-        {"action": "click", "text": name or f"target {obj}"},
-        {"action": "fill", "field": "value", "val": "<NEW_VALUE>"},
-        {"action": "submit"},
-        {"action": "assert", "token": "updated"},
-    ]
+    return steps
 
-
-def _steps_delete(obj: str, app: str, name: str):
-    return [
-        {"action": "open", "app": app},
-        {"action": "goto", "section": f"{obj}s"},
-        {"action": "click", "text": name or f"target {obj}"},
-        {"action": "click", "text": "delete"},
-        {"action": "submit"},
-        {"action": "assert", "token": "deleted"},
-    ]
 
 
 def _steps_open(obj: str, app: str):
@@ -432,56 +272,6 @@ def _steps_open(obj: str, app: str):
     ]
 
 
-# ---------------------------
-# EXTRACTION HELPERS
-# ---------------------------
-# def extract_possible_name(prompt: str, obj: str | None):
-#     if not obj:
-#         return None
-
-#     tokens = prompt.lower().split()
-#     if obj in tokens:
-#         idx = tokens.index(obj)
-#         if idx + 1 < len(tokens):
-#             return " ".join(tokens[idx + 1:])
-
-#     return None
-
-# def extract_possible_name(prompt: str, obj: str | None, app: str | None = None):
-#     if not obj:
-#         return None
-
-#     tokens = prompt.lower().split()
-
-#     if obj not in tokens:
-#         return None
-
-#     idx = tokens.index(obj)
-#     # Everything after the object word, e.g. "project"
-#     name_tokens = tokens[idx + 1 :]
-
-#     if not name_tokens:
-#         return None
-
-#     # Remove a trailing "in <app>" / "on <app>" / "at <app>" / "for <app>"
-#     if app:
-#         app_l = app.lower()
-#         if len(name_tokens) >= 2:
-#             if (
-#                 name_tokens[-1] == app_l
-#                 and name_tokens[-2] in {"in", "on", "at", "for"}
-#             ):
-#                 name_tokens = name_tokens[:-2]
-
-#     # Strip leading filler words (in case user wrote "a project called X")
-#     while name_tokens and name_tokens[0] in {"in", "on", "at", "the", "a", "an", "called","name"}:
-#         name_tokens = name_tokens[1:]
-#     print(name_tokens)
-
-#     if not name_tokens:
-#         return None
-
-#     return " ".join(name_tokens)
 def extract_possible_name(prompt: str, obj: str | None, app: str | None = None):
     if not obj:
         return None
@@ -511,19 +301,18 @@ def extract_possible_name(prompt: str, obj: str | None, app: str | None = None):
     if not name_tokens:
         return None
 
-    # 2) If we see markers like "name", "named", "called", "title" inside,
-    #    only keep what comes AFTER the marker.
+   
     markers = {"name", "named", "called", "title"}
     for j, tok in enumerate(name_tokens):
         if tok in markers and j + 1 < len(name_tokens):
             name_tokens = name_tokens[j + 1 :]
             break
 
-    # 3) Strip leading filler words
+   
     while name_tokens and name_tokens[0] in {"in", "on", "at", "the", "a", "an", "called"}:
         name_tokens = name_tokens[1:]
 
-    # 4) Also drop any leading app token just in case
+    
     if app:
         app_l = app.lower()
         while name_tokens and name_tokens[0] == app_l:
@@ -544,3 +333,4 @@ def extract_filter_value(prompt: str) -> str | None:
         if kw in lower:
             return lower.split(kw, 1)[1].strip() or None
     return None
+

@@ -90,6 +90,27 @@ def _utc_run_id() -> str:
 def _ensure_dir(p: Path) -> None:
     p.mkdir(parents=True, exist_ok=True)
 
+# class CLI:
+#     @staticmethod
+#     def read_prompt() -> Optional[str]:
+#         try:
+#             raw = input("Enter task (or 'exit' to quit) > ").strip()
+#         except (EOFError, KeyboardInterrupt):
+#             print("\nExiting.")
+#             return None
+
+#         if not raw or raw.lower() in {"exit", "quit"}:
+#             return None
+
+#         if len(raw) < MIN_PROMPT_LEN:
+#             print(f"Please enter a clearer prompt (≥ {MIN_PROMPT_LEN} chars).")
+#             return ""
+
+#         if len(raw) > MAX_PROMPT_LEN:
+#             print(f"Trimming prompt to {MAX_PROMPT_LEN} chars.")
+#             raw = raw[:MAX_PROMPT_LEN]
+
+#         return raw
 class CLI:
     @staticmethod
     def read_prompt() -> Optional[str]:
@@ -99,8 +120,12 @@ class CLI:
             print("\nExiting.")
             return None
 
-        if not raw or raw.lower() in {"exit", "quit"}:
+        if raw.lower() in {"exit", "quit"}:
             return None
+
+        if not raw:
+            print(f"Please enter a clearer prompt (≥ {MIN_PROMPT_LEN} chars).")
+            return ""
 
         if len(raw) < MIN_PROMPT_LEN:
             print(f"Please enter a clearer prompt (≥ {MIN_PROMPT_LEN} chars).")
@@ -121,10 +146,8 @@ class CLI:
         _ensure_dir(run_dir)
         _ensure_dir(states_dir)
 
-        # Save the raw prompt
         (run_dir / "prompt.txt").write_text(prompt, encoding="utf-8")
 
-        # Configure per-run logger (file + console), avoid duplicate handlers
         logger = logging.getLogger(f"ui-state-{run_id}")
         logger.setLevel(logging.INFO)
         logger.propagate = False
@@ -137,7 +160,6 @@ class CLI:
             logger.addHandler(fh)
             logger.addHandler(ch)
 
-        # Minimal run summary stub (you can enrich later)
         (run_dir / "run.json").write_text(
             (
                 '{\n'
@@ -166,18 +188,17 @@ if __name__ == "__main__":
     while True:
         prompt = CLI.read_prompt()
         if prompt is None:
-            # exit/quit/Ctrl+C
+           
             break
         if prompt == "":
-            # too short; re-prompt
+            
             continue
         if last_prompt and prompt == last_prompt:
             print("Note: same prompt as last run.")
         last_prompt = prompt
 
         run_id, run_dir, logger = CLI.create_run(prompt)
-        # ↓↓↓ Hook your Agent B orchestrator here later ↓↓↓
-        # AgentB.run(prompt=prompt, run_dir=run_dir, logger=logger)
+        
         plan(prompt=prompt, run_dir=run_dir, logger=logger)
         execute_plan(run_dir, logger)
 

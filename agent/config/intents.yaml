@@ -21,3 +21,4 @@ objects:
     nouns: [page, doc, document]
   setting:
     nouns: [setting, settings, config, preference]
+  

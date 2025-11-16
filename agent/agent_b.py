@@ -1,3 +1,0 @@
-
-class AgentB:
-    pass

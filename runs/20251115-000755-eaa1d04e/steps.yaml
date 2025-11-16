@@ -1,9 +1,0 @@
-- action: open
-  app: Notion
-- action: click
-  text: New page
-- action: fill
-  field: Untitled
-  val: <AUTO_NAME>
-- action: assert
-  token: <AUTO_NAME>
