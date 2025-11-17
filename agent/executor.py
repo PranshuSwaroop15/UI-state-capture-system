@@ -43,10 +43,7 @@ def perform_step(page, step: Dict[str, Any], logger):
 
     elif action == "fill":
         do_fill(page, step, logger)
-
-
     
-
     elif action == "submit":
         do_submit(page, step, logger)
 
@@ -98,7 +95,7 @@ def do_goto(page, step, logger):
     except Exception:
         pass
 
-    # Try buttons with that name
+   
     try:
         locator = page.get_by_role("button", name=re.compile(section, re.I))
         if locator.count() > 0:
@@ -110,7 +107,7 @@ def do_goto(page, step, logger):
     logger.warning(f"[goto] Could not find UI element for section={section!r}")
 
 
-# # working
+
 def do_click(page, step, logger):
     raw_text = step.get("text")
     if not raw_text:
@@ -171,7 +168,7 @@ def do_click(page, step, logger):
     except Exception as e:
         logger.warning(f"[click] No element matched text≈{raw_text!r}: {e}")
 
-#working
+
 def do_fill(page, step, logger):
     field = step.get("field")
     val = step.get("val", "")
@@ -318,7 +315,6 @@ def do_assert(page, step, logger):
 
 
 def capture_state(page, step, idx: int, states_dir: Path):
-    """Capture screenshot + metadata for this step."""
     screenshot_name = f"{idx:02d}_{step.get('action', 'unknown')}.png"
     screenshot_path = states_dir / screenshot_name
 

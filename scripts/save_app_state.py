@@ -1,4 +1,3 @@
-# scripts/save_app_state.py
 from playwright.sync_api import sync_playwright
 import sys
 
@@ -34,7 +33,7 @@ def main():
         input("When you're fully logged in, press Enter here... ")
 
         context.storage_state(path=state_filename)
-        print(f"✅ Saved login state to {state_filename}")
+        print(f"Saved login state to {state_filename}")
 
         browser.close()
 

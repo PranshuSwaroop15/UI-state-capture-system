@@ -7,13 +7,11 @@ from pathlib import Path
 from typing import Optional
 from planner import plan
 from executor import execute_plan
-# ---------- Config ----------
 RUNS_DIR = Path(os.environ.get("RUNS_DIR", "./runs"))
 MIN_PROMPT_LEN = int(os.environ.get("MIN_PROMPT_LEN", "4"))
 MAX_PROMPT_LEN = int(os.environ.get("MAX_PROMPT_LEN", "500"))
 
 def _utc_run_id() -> str:
-    # YYYYMMDD-HHMMSS-<uuid8> (UTC) -> safe for folder names
     ts = dt.datetime.utcnow().strftime("%Y%m%d-%H%M%S")
     return f"{ts}-{str(uuid.uuid4())[:8]}"
 

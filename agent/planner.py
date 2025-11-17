@@ -1,4 +1,3 @@
-# agent/planner
 from pathlib import Path
 import yaml
 import re
@@ -131,7 +130,6 @@ def plan(prompt: str, run_dir: Path, logger) -> None:
 
 
 
-#Working
 def _steps_create(obj: str | None, app: str | None, name: str | None):
     title = name or "<AUTO_NAME>"
 
@@ -171,15 +169,6 @@ def _steps_create(obj: str | None, app: str | None, name: str | None):
             {"action": "assert", "token": title, "state_label": "notion_page_created"},
         ]
 
-    if app == "Asana" and obj == "project":
-        return [
-            {"action": "open", "app": app, "state_label": "asana_home"},
-            {"action": "click", "text": "Create", "state_label": "asana_create_menu_open"},
-            {"action": "click", "text": "Project", "state_label": "asana_new_project_modal_open"},
-            {"action": "fill", "field": "Project name", "val": title, "state_label": "asana_project_name_filled"},
-            {"action": "submit", "state_label": "asana_project_submit_clicked"},
-            {"action": "assert", "token": title, "state_label": "asana_project_created"},
-        ]
 
     if app == "Linear" and obj == "project":
         section = "Projects"
@@ -282,13 +271,12 @@ def extract_possible_name(prompt: str, obj: str | None, app: str | None = None):
         return None
 
     idx = tokens.index(obj)
-    # Everything after the object word, e.g. "project"
+
     name_tokens = tokens[idx + 1 :]
 
     if not name_tokens:
         return None
 
-    # 1) Remove a trailing "in <app>" / "on <app>" / "at <app>" / "for <app>"
     if app:
         app_l = app.lower()
         if len(name_tokens) >= 2:
@@ -324,10 +312,7 @@ def extract_possible_name(prompt: str, obj: str | None, app: str | None = None):
     return " ".join(name_tokens)
 
 def extract_filter_value(prompt: str) -> str | None:
-    """
-    Extremely simple heuristic: grab text after 'by' or 'with'.
-    e.g. 'filter issues in Linear by priority high' -> 'priority high'
-    """
+   
     lower = prompt.lower()
     for kw in [" by ", " with "]:
         if kw in lower:
